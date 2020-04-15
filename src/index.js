@@ -6,6 +6,7 @@ import { GraphQLServer } from 'graphql-yoga'
 const typeDefs = `
     type Query {
         greeting(name: String, position: String): String!
+        order(item: String, qtd: Int, price: Float!): String!
         add(a: Float!, b: Float!): Float!
         me: User!
         post: Post!
@@ -35,6 +36,11 @@ const resolvers = {
             } else {
                 return 'Hello!'
             }
+        },
+        order(parent, args, ctx, info) {
+           if(args.item && args.qtd && args.price) {
+               return `Your order: ${args.qtd} - ${args.item} - ${args.price}`
+           }
         },
         add(parent, args, ctx, info) {
             return args.a + args.b
