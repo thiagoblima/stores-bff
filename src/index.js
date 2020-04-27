@@ -40,6 +40,20 @@ const posts = [{
     author: '2'
 }]
 
+const comments = [{
+    id: '102',
+    text: 'This worked well for me. Thanks!'
+}, {
+    id: '103',
+    text: 'Glad you enjoyed it.'
+}, {
+    id: '104',
+    text: 'This did no work.'
+}, {
+    id: '105',
+    text: 'Nevermind. I got it to work.'
+}]
+
 // Type definitions (schema)
 const typeDefs = `
     type Query {
@@ -48,6 +62,7 @@ const typeDefs = `
         greeting(name: String, position: String): String!
         order(item: String, qtd: Int, price: Float!): String!
         add(numbers: [Float!]!): Float!
+        comments: [Comment!]!
         grades: [Int!]!
         me: User!
         post: Post!
@@ -67,6 +82,11 @@ const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    }
+
+    type Comment {
+        id: ID!
+        text: String!
     }
 `
 
@@ -92,6 +112,9 @@ const resolvers = {
                 const isBodyMatch = post.body.toLowerCase().includes(args.query.toLowerCase())
                 return isTitleMatch || isBodyMatch
             })
+        },
+        comments(parent, args, ctx, info) {
+            return comments
         },
         greeting(parent, args, ctx, info) {
             if (args.name && args.position) {
