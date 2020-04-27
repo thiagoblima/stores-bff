@@ -1,4 +1,6 @@
-import { GraphQLServer } from 'graphql-yoga'
+import {
+    GraphQLServer
+} from 'graphql-yoga'
 
 // Scalar types - String, Boolean, Int, Float, ID
 
@@ -56,6 +58,7 @@ const typeDefs = `
         name: String!
         email: String!
         age: Int
+        posts: [Post!]!
     }
 
     type Post {
@@ -98,9 +101,9 @@ const resolvers = {
             }
         },
         order(parent, args, ctx, info) {
-           if(args.item && args.qtd && args.price) {
-               return `Your order: ${args.qtd} - ${args.item} - ${args.price}`
-           }
+            if (args.item && args.qtd && args.price) {
+                return `Your order: ${args.qtd} - ${args.item} - ${args.price}`
+            }
         },
         add(parent, args, ctx, info) {
             if (args.numbers.length === 0) {
@@ -134,6 +137,13 @@ const resolvers = {
         author(parent, args, ctx, info) {
             return users.find((user) => {
                 return user.id === parent.author
+            })
+        }
+    },
+    User: {
+        posts(parent, args, ctx, info) {
+            return posts.filter((post) => {
+                return post.author === parent.id
             })
         }
     }
