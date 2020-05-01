@@ -42,16 +42,20 @@ const posts = [{
 
 const comments = [{
     id: '102',
-    text: 'This worked well for me. Thanks!'
+    text: 'This worked well for me. Thanks!',
+    author: '3'
 }, {
     id: '103',
-    text: 'Glad you enjoyed it.'
+    text: 'Glad you enjoyed it.',
+    author: '1'
 }, {
     id: '104',
-    text: 'This did no work.'
+    text: 'This did no work.',
+    author: '2'
 }, {
     id: '105',
-    text: 'Nevermind. I got it to work.'
+    text: 'Nevermind. I got it to work.',
+    author: '1'
 }]
 
 // Type definitions (schema)
@@ -74,6 +78,7 @@ const typeDefs = `
         email: String!
         age: Int
         posts: [Post!]!
+        comments: [Comment!]!
     }
 
     type Post {
@@ -87,6 +92,7 @@ const typeDefs = `
     type Comment {
         id: ID!
         text: String!
+        author: User!
     }
 `
 
@@ -163,12 +169,24 @@ const resolvers = {
             })
         }
     },
+    Comment: {
+        author(parent, args, ctx, info) {
+            return users.find((user) => {
+                return user.id === parent.author
+            })
+        }
+    },
     User: {
         posts(parent, args, ctx, info) {
             return posts.filter((post) => {
                 return post.author === parent.id
             })
-        }
+        },
+        comments(parent, args, ctx, info) {
+            return comments.filter((comment) => {
+                return comment.author === parent.id
+            })
+        } 
     }
 }
 
@@ -177,6 +195,6 @@ const server = new GraphQLServer({
     resolvers
 })
 
-server.start(() => {
-    console.log('The server is up!')
+server.start((server) => {
+    console.log('The server is up!', server)
 })
