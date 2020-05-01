@@ -14,9 +14,11 @@
     "babel-preset-env": "^1.7.0",
     "graphql-yoga": "^1.14.10",
     "pg": "^8.0.2",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
+    "@types/uuid": "^7.0.3",
     "nodemon": "^1.17.5"
   }
 }
