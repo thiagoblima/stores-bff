@@ -2,7 +2,6 @@ import {
     GraphQLServer
 } from 'graphql-yoga'
 import uuidv4 from 'uuid/v4'
-import {findArgChanges} from 'graphql/utilities/findBreakingChanges'
 
 // Scalar types - String, Boolean, Int, Float, ID
 
