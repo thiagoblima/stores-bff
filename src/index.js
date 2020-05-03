@@ -55,7 +55,7 @@ const comments = [{
     id: '104',
     text: 'This did no work.',
     author: '2',
-    post : '11'
+    post: '11'
 }, {
     id: '105',
     text: 'Nevermind. I got it to work.',
@@ -79,6 +79,7 @@ const typeDefs = `
 
     type Mutation {
         createUser(data: CreateUserInput): User!
+        deleteUser(id: ID!): User!
         createPost(data: CreatePostInput): Post!
         createComment(data: CreateCommentInput): Comment!
     }
@@ -201,7 +202,7 @@ const resolvers = {
             if (emailTaken) {
                 throw new Error('Email taken')
             }
-            
+
             const user = {
                 id: uuidv4(),
                 ...args.data
@@ -211,16 +212,27 @@ const resolvers = {
 
             return user
         },
+        deleteUser(parent, args, ctx, info) {
+            const userIndex = users.findIndex((user) => user.id === args.id)
+
+            if (userIndex === -1) {
+                throw new Error('User not found')
+            }
+
+            const deletedUsers = users.splice(userIndex, 1)
+
+            return deletedUsers[0]
+        },
         createPost(parent, args, ctx, info) {
             const userExists = users.some((user) => user.id === args.data.author)
 
             if (!userExists) {
                 throw new Error('User not found')
             }
-            
+
             const post = {
                 id: uuidv4(),
-                ...args.data 
+                ...args.data
             }
 
             posts.push(post)
@@ -230,7 +242,7 @@ const resolvers = {
         createComment(parent, args, ctx, info) {
             const userExists = users.some((user) => user.id === args.data.author)
             const postExists = posts.some((post) => post.id === args.data.post && post.published)
-            
+
             if (!userExists || !postExists) {
                 throw new Error('Unable to find the user and post')
             }
@@ -280,7 +292,7 @@ const resolvers = {
             return comments.filter((comment) => {
                 return comment.author === parent.id
             })
-        } 
+        }
     }
 }
 
