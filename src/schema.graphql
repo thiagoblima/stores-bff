@@ -24,7 +24,7 @@ type Query {
 
     type Subscription {
         count: Int!
-        comment(postId: ID!): Comment!
+        comment(postId: ID!): CommentSubscriptionPayload!
         post: PostsubscriptionPayload!
     }
 
@@ -91,4 +91,9 @@ type Query {
     type PostsubscriptionPayload {
         mutation: String!
         data: Post!
+    }
+
+    type CommentSubscriptionPayload {
+        mutation: String!
+        data: Comment!
     }
