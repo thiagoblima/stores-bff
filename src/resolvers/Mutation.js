@@ -13,7 +13,7 @@ const Mutation = {
             ...args.data
         }
 
-        db.users.push(user)
+        db.users.push(user) 
 
         return user
     },
